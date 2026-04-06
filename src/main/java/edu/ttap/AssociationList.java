@@ -1,6 +1,5 @@
 package edu.ttap.maps;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -9,25 +8,12 @@ import java.util.Set;
  * An association list is an implementation of a map via a list of key-value pairs.
  */
 public class AssociationList<K, V> implements Map<K, V> {
-     
-    private class Pair<T, U> {
-    public T key;
-    public U value;
-    public Pair(T key, U value) {
-        this.key = key;
-        this.value = value;
-        }
-    }
-    private ArrayList<Pair> list = new ArrayList<>();
-
-
-
+    
     /**
      * Clears the association list, removing all key-value pairs.
      */
     @Override
     public void clear() {
-        for (Pair i : list)
         // TODO: Implement me!
         throw new UnsupportedOperationException("Unimplemented method 'clear'");
     }
