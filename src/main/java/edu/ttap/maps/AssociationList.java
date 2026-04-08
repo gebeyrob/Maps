@@ -6,30 +6,29 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * An association list is an implementation of a map via a list of key-value pairs.
+ * An association list is an implementation of a map via a list of key-value
+ * pairs.
  */
 public class AssociationList<K, V> implements Map<K, V> {
-     
+
     private class Pair<T, U> {
-    public T key;
-    public U value;
-    public Pair(T key, U value) {
-        this.key = key;
-        this.value = value;
+        public T key;
+        public U value;
+
+        public Pair(T key, U value) {
+            this.key = key;
+            this.value = value;
         }
     }
-    private ArrayList<Pair> list = new ArrayList<>();
 
-
+    private ArrayList<Pair<K,V>> list = new ArrayList<>();
 
     /**
      * Clears the association list, removing all key-value pairs.
      */
     @Override
     public void clear() {
-        for (Pair i : list)
-        // TODO: Implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'clear'");
+        list.clear();
     }
 
     /**
@@ -38,8 +37,12 @@ public class AssociationList<K, V> implements Map<K, V> {
      */
     @Override
     public boolean containsKey(Object key) {
-        // TODO: Implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'containsKey'");
+        for (Pair<K, V> i : list) {
+            if (i.key.equals(key)) { //might run into null
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -48,8 +51,12 @@ public class AssociationList<K, V> implements Map<K, V> {
      */
     @Override
     public boolean containsValue(Object value) {
-        // TODO: Implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'containsValue'");
+        for (Pair<K, V> i : list) {
+            if (i.value.equals(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -64,21 +71,24 @@ public class AssociationList<K, V> implements Map<K, V> {
     /**
      * @param key the key whose associated value is to be returned
      * @return the value to which the specified key is mapped, or null if this
-     * map contains no mapping for the key
+     *         map contains no mapping for the key
      */
     @Override
     public V get(Object key) {
-        // TODO: Implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
+        for (Pair<K, V> i : list) {
+            if (i.key.equals(key)) {
+                return i.value;
+            }
+        }
+        return null;
     }
 
     /**
-     * @return true iff this map contains no key-value mappings
+     * @return true if this map contains no key-value mappings
      */
     @Override
     public boolean isEmpty() {
-        // TODO: Implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'isEmpty'");
+        return list.isEmpty();
     }
 
     /**
@@ -93,21 +103,25 @@ public class AssociationList<K, V> implements Map<K, V> {
     /**
      * If there is no entry for key in the map, updates the entry to associate key
      * with value. Otherwise, it updates the entry for key accordingly.
-     * @param key the key with which the specified value is to be associated
+     * 
+     * @param key   the key with which the specified value is to be associated
      * @param value the value to be associated with the specified key
      * @return the previous value associated with key, or null if there was no
      *         mapping for key
      */
     @Override
     public V put(K key, V value) {
-        // TODO: Implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'put'");
+        if (containsKey(key))
+        
     }
 
     /**
-     * Copies all of the mappings from the specified map to this map. The effect of this
-     * operation is equivalent to applying the put(K, V) operation to each entry in the
+     * Copies all of the mappings from the specified map to this map. The effect of
+     * this
+     * operation is equivalent to applying the put(K, V) operation to each entry in
+     * the
      * specified map.
+     * 
      * @param m the map whose mappings are to be copied to this map
      */
     @Override
@@ -118,8 +132,10 @@ public class AssociationList<K, V> implements Map<K, V> {
 
     /**
      * Removes the mapping for a key from this map if it is present.
+     * 
      * @param key the key whose mapping is to be removed from the map
-     * @return the previous value associated with key, or null if there was no mapping for
+     * @return the previous value associated with key, or null if there was no
+     *         mapping for
      *         key.
      */
     @Override
