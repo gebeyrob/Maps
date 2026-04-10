@@ -1,6 +1,11 @@
 package edu.ttap.maps;
 
 import java.util.Map;
+import java.util.Scanner;
+import java.util.HashSet;
+import java.util.Set;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A substitution cipher is a simple encryption scheme that associates each
@@ -14,9 +19,14 @@ public class SubstitutionCipher {
      * @param filename the name of the file containing the mapping
      * @return the cipher as a mapping between characters
      */
-    public static Map<Character, Character> createCipher(String filename) {
+    public static Map<Character, Character> createCipher(String filename) throws IOException {
         // TODO: implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'createCipher'");
+        Map<Character, Character> characters = new AssociationList<>();
+        Scanner scanner = new Scanner(new File(filename));
+        while (scanner.hasNextLine()) {
+           String line = scanner.nextLine().trim();
+        }
+        return characters;
     }
 
     /**

@@ -1,6 +1,8 @@
 package edu.ttap.maps;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * A substitution cipher is a simple encryption scheme that associates each
