@@ -1,7 +1,8 @@
 package edu.ttap.maps;
-
+import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class AssociationList<K, V> implements Map<K, V> {
         }
     }
 
-    private ArrayList<Pair<K,V>> list = new ArrayList<>();
+    private ArrayList<Pair<K, V>> list = new ArrayList<>();
 
     /**
      * Clears the association list, removing all key-value pairs.
@@ -38,7 +39,7 @@ public class AssociationList<K, V> implements Map<K, V> {
     @Override
     public boolean containsKey(Object key) {
         for (Pair<K, V> i : list) {
-            if (i.key.equals(key)) { //might run into null
+            if (i.key.equals(key)) { // might run into null
                 return true;
             }
         }
@@ -96,8 +97,11 @@ public class AssociationList<K, V> implements Map<K, V> {
      */
     @Override
     public Set<K> keySet() {
-        // TODO: Implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'keySet'");
+        Set<K> keys = new HashSet<>();
+        for (Pair<K, V> i : list) {
+            keys.add(i.key);
+        }
+        return keys;
     }
 
     /**
@@ -111,8 +115,17 @@ public class AssociationList<K, V> implements Map<K, V> {
      */
     @Override
     public V put(K key, V value) {
-        if (containsKey(key))
-        
+        if (containsKey(key)) {
+            for (Pair<K, V> i : list) {
+                if (i.key.equals(key)) {
+                    V oldValue = i.value;
+                    i.value = value;
+                    return oldValue;
+                }
+            }
+        }
+        list.add(new Pair<>(key, value));
+        return null;
     }
 
     /**
@@ -126,8 +139,9 @@ public class AssociationList<K, V> implements Map<K, V> {
      */
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        // TODO: implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'putAll'");
+        for(Entry<? extends K, ? extends V> entry: m.entrySet()){
+            put(entry.getKey(),entry.getValue());
+        }
     }
 
     /**
@@ -140,8 +154,16 @@ public class AssociationList<K, V> implements Map<K, V> {
      */
     @Override
     public V remove(Object key) {
-        // TODO: Implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'remove'");
+       if (containsKey(key)) {
+            for (Pair<K, V> i : list) {
+                if (i.key.equals(key)) {
+                    V oldValue = i.value;
+                    list.remove(i);
+                    return oldValue;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -149,16 +171,18 @@ public class AssociationList<K, V> implements Map<K, V> {
      */
     @Override
     public int size() {
-        // TODO: Implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'size'");
+        return list.size();
     }
 
     /**
-     * @return a collection vof the values contained in this map, e.g., a list
+     * @return a collection of the values contained in this map, e.g., a list
      */
     @Override
     public Collection<V> values() {
-        // TODO: Implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'values'");
+        Collection<V> values = new ArrayList<>();
+        for (Pair<K, V> i : list) {
+            values.add(i.value);
+        }
+        return values;
     }
 }
