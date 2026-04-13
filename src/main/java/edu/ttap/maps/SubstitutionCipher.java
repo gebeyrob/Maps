@@ -7,6 +7,7 @@ import java.util.Set;
 import java.io.File;
 import java.io.IOException;
 
+
 /**
  * A substitution cipher is a simple encryption scheme that associates each
  * letter of the alphabet with a different letter.
