@@ -1,5 +1,4 @@
 package edu.ttap.maps;
-
 import java.util.Map;
 import java.util.Scanner;
 import java.util.HashSet;
