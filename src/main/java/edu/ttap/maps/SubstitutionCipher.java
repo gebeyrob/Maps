@@ -25,7 +25,15 @@ public class SubstitutionCipher {
         Scanner scanner = new Scanner(new File(filename));
         while (scanner.hasNextLine()) {
            String line = scanner.nextLine().trim();
+           if (!line.isEmpty()) {
+                // Each line is "a b" — split on whitespace
+                String[] parts = line.split("\\s+");
+                char key = parts[0].charAt(0);
+                char value = parts[1].charAt(0);
+                characters.put(key, value);
+           }
         }
+        scanner.close();
         return characters;
     }
 
@@ -39,7 +47,22 @@ public class SubstitutionCipher {
      */
     public static boolean isValidCipher(Map<Character, Character> cipher) {
         // TODO: implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'isValidCipher'");
+        for(char c = 'a'; c <= 'z'; c++) {
+            if(!cipher.containsKey(c)) {
+                return false;
+            }
+        }
+        Set<Character> seen = new HashSet<>();
+        for(char c = 'a'; c <= 'z'; c++){
+            char mapped = cipher.get(c);
+            if(seen.contains(mapped)) {
+                return false;
+            }
+            seen.add(mapped);
+
+        }
+        return true;
+        
     }
 
     /**
@@ -51,7 +74,12 @@ public class SubstitutionCipher {
      */
     public static Map<Character, Character> invertCipher(Map<Character, Character> cipher) {
         // TODO: implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'invertCipher'");
+        Map<Character, Character> inverse = new AssociationList<>();
+        for(char c = 'a'; c <= 'z'; c++){
+            char mapped = cipher.get(c);
+            inverse.put(mapped, c);
+        }
+        return inverse; 
     }
 
     /**
@@ -62,7 +90,16 @@ public class SubstitutionCipher {
      */
     public static String translate(String s, Map<Character, Character> mapping) {
         // TODO: implement me!
-        throw new UnsupportedOperationException("Unimplemented method 'translate'");
+        StringBuilder sb = new StringBuilder();
+        for(char c: s.toCharArray()){
+            if(mapping.containsKey(c)) {
+                sb.append(mapping.get(c));
+            } else {
+                //space and unknow characters, pass without change
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
     /**
@@ -72,9 +109,45 @@ public class SubstitutionCipher {
     public static void main(String[] args) {
         if (args.length != 3) {
             System.err.println(
-                "Usage: java SubstitutionCipher <encode|decode> <cipherfile> <filename>");
+                "Usage: java SubstitutionCipher <encrypt|decrypt> <cipherfile> <filename>");
             System.exit(1);
         }
         // TODO: finish implementing me!
+
+        String mode = args[0];
+        String cipherFile = args[1];
+        String textFile = args[2];
+
+        try {// read cipher
+            Map<Character, Character> cipher = createCipher(cipherFile);
+            // is valid
+            if(!isValidCipher(cipher)){
+                System.err.println("ERROR: Invalid cipher - must map all letters");
+            System.exit(1);
+            } 
+
+            // find which mapping to use
+            Map<Character, Character> mapping;
+            if (mode.equals("decrypt")){
+                mapping = invertCipher(cipher);
+            } else if (mode.equals("encrypt")) {
+                mapping = cipher;
+            }else {
+                System.err.println("ERROR: first argument must be 'encrypt' or 'decrypt' .");
+                System.exit(1);
+                return; 
+            }
+
+            Scanner scanner = new Scanner(new File(textFile));
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                System.out.println(translate(line, mapping));
+            }
+            scanner.close();
+    
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+            System.exit(1);
+        }
     }
 }
